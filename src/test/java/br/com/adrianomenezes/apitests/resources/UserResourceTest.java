@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -84,6 +85,7 @@ class UserResourceTest {
         assertNotNull(response.getBody());
         assertEquals(ResponseEntity.class,response.getClass());
         assertEquals(ArrayList.class,response.getBody().getClass());
+        assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals(UserDTO.class,response.getBody().get(INDEX).getClass());
         assertEquals(ID, response.getBody().get(INDEX).getId());
         assertEquals(NOME, response.getBody().get(INDEX).getName());
@@ -94,7 +96,16 @@ class UserResourceTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnCreated() {
+        when(service.create(any())).thenReturn(userDTO);
+        ResponseEntity<UserDTO> response = resource.create(userDTO);
+
+        assertEquals(HttpStatus.CREATED,response.getStatusCode());
+        assertEquals(ID, response.getBody().getId());
+        assertEquals(NOME, response.getBody().getName());
+        assertEquals(EMAIL, response.getBody().getEmail());
+        assertEquals(PASSWORD, response.getBody().getPassword());
+        assertNotNull(response.getHeaders().get("Location"));
     }
 
     @Test
