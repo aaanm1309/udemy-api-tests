@@ -3,25 +3,23 @@ package br.com.adrianomenezes.apitests.services.impl;
 import br.com.adrianomenezes.apitests.domain.User;
 import br.com.adrianomenezes.apitests.domain.dto.UserDTO;
 import br.com.adrianomenezes.apitests.repositories.UserRepository;
+import br.com.adrianomenezes.apitests.services.exceptions.DataIntegrityViolationException;
 import br.com.adrianomenezes.apitests.services.exceptions.ObjectNotFoundException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+//import static org.mockito.ArgumentMatchers.any;
+//import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -32,6 +30,7 @@ class UserServiceImplTest {
     public static final String EMAIL = "valdir@teste.com";
     public static final String PASSWORD = "123XYZ";
     public static final int INDEX = 0;
+    public static final String EMAIL_JÁ_CADASTRADO_NO_SISTEMA_SISTEMA_NÃO_ACEITA_EMAIL_DUPLICADOS = "Email já cadastrado no sistema. Sistema não aceita email duplicados";
     @InjectMocks
     private UserServiceImpl service;
     @Mock
@@ -87,6 +86,7 @@ class UserServiceImplTest {
 
         try{
             service.findById(ID);
+            assertEquals("Esperado Erro no Catch","Não Gerou Erro no Catch");
         } catch (Exception ex) {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals("Objeto não encontrado", ex.getMessage());
@@ -121,7 +121,40 @@ class UserServiceImplTest {
 
 
     @Test
-    void create() {
+    void whenCreateThenReturnSuccess() {
+        when(repository.save(any())).thenReturn(user);
+        when(mapper.map(eq(user), any())).thenReturn(userDTO);
+        when(mapper.map(eq(userDTO), any())).thenReturn(user);
+
+        UserDTO response = service.create(userDTO);
+        assertEquals(UserDTO.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NOME, response.getName());
+        assertEquals(EMAIL, response.getEmail());
+        assertEquals(PASSWORD, response.getPassword());
+    }
+
+    @Test
+    void whenCreateThenReturnADataIntegrityViolationException() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUser);
+        try {
+            optionalUser.get().setId(3);
+            service.create(userDTO);
+            assertEquals("Esperado Erro no Catch","Não Gerou Erro no Catch");
+        } catch (Exception ex){
+            assertEquals(DataIntegrityViolationException.class,ex.getClass());
+            assertEquals(EMAIL_JÁ_CADASTRADO_NO_SISTEMA_SISTEMA_NÃO_ACEITA_EMAIL_DUPLICADOS,ex.getMessage());
+        }
+//        when(repository.save(any())).thenReturn(user);
+//        when(mapper.map(Mockito.eq(user), any())).thenReturn(userDTO);
+//        when(mapper.map(Mockito.eq(userDTO), any())).thenReturn(user);
+//
+//        UserDTO response = service.create(userDTO);
+//        assertEquals(UserDTO.class, response.getClass());
+//        assertEquals(ID, response.getId());
+//        assertEquals(NOME, response.getName());
+//        assertEquals(EMAIL, response.getEmail());
+//        assertEquals(PASSWORD, response.getPassword());
     }
 
     @Test
