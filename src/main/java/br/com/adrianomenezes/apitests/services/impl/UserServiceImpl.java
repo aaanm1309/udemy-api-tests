@@ -4,6 +4,7 @@ import br.com.adrianomenezes.apitests.domain.User;
 import br.com.adrianomenezes.apitests.domain.dto.UserDTO;
 import br.com.adrianomenezes.apitests.repositories.UserRepository;
 import br.com.adrianomenezes.apitests.services.UserService;
+import br.com.adrianomenezes.apitests.services.exceptions.DataIntegrityViolationException;
 import br.com.adrianomenezes.apitests.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO create(UserDTO dto) {
+        findByEmailCheck(dto);
         return mapper.map(repository.save(mapper.map(dto,User.class)), UserDTO.class);
+    }
+
+    @Override
+    public void findByEmailCheck(UserDTO dto) {
+        Optional<User> user = repository.findByEmail(dto.getEmail());
+        if (user.isPresent()){
+            throw new DataIntegrityViolationException(
+                        "Email já cadastrado no sistema. Sistema não aceita email duplicados"
+                    );
+        }
     }
 }

@@ -15,4 +15,6 @@ public interface UserService {
     List<UserDTO> findAll();
 
     UserDTO create(UserDTO dto);
+
+    void findByEmailCheck(UserDTO dto);
 }
