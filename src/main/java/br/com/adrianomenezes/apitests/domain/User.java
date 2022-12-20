@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity( name = "tb_user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +19,7 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+
+
 
 }

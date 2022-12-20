@@ -7,7 +7,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-update
+      ddl-auto: create
     #MySQL JPA
   #    database-platform: org.hibernate.dialect.MySQL8Dialect
   #    show-sql: true
