@@ -17,4 +17,6 @@ public interface UserService {
     UserDTO create(UserDTO dto);
 
     void findByEmailCheck(UserDTO dto);
+
+    UserDTO update(UserDTO dto);
 }

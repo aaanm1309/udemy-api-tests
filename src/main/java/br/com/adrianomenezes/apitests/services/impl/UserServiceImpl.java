@@ -51,10 +51,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void findByEmailCheck(UserDTO dto) {
         Optional<User> user = repository.findByEmail(dto.getEmail());
-        if (user.isPresent()){
+        if (user.isPresent() && !user.get().getId().equals(dto.getId())){
             throw new DataIntegrityViolationException(
                         "Email já cadastrado no sistema. Sistema não aceita email duplicados"
                     );
         }
+    }
+
+    @Override
+    public UserDTO update(UserDTO dto) {
+        UserDTO userReturned = findById(dto.getId());
+        findByEmailCheck(dto);
+        return mapper.map(repository.save(mapper.map(dto,User.class)), UserDTO.class);
     }
 }
