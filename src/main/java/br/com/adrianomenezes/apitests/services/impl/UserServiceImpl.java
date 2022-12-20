@@ -30,14 +30,18 @@ public class UserServiceImpl implements UserService {
             throw new ObjectNotFoundException("Objeto não encontrado");
         }
         UserDTO userDtoReturned = mapper.map(userReturned, UserDTO.class);
-//        return userReturned.orElse(new User());
+
         return userDtoReturned;
     }
 
     @Override
     public List<UserDTO> findAll() {
+        List<User> userReturned =  repository.findAll();
 
-        return repository.findAll().stream()
+        if( userReturned == null || userReturned.isEmpty()){
+            return null;
+        }
+        return userReturned.stream()
                 .map(x-> mapper.map(x, UserDTO.class))
                 .collect(Collectors.toList());
     }
