@@ -3,7 +3,7 @@ package br.com.adrianomenezes.apitests.resources;
 import br.com.adrianomenezes.apitests.domain.User;
 import br.com.adrianomenezes.apitests.domain.dto.UserDTO;
 import br.com.adrianomenezes.apitests.services.UserService;
-import org.modelmapper.ModelMapper;
+//import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping(value = "/api/v1/user")
@@ -20,8 +20,8 @@ public class UserResource {
     @Autowired
     private UserService service;
 
-    @Autowired
-    private ModelMapper mapper;
+//    @Autowired
+//    private ModelMapper mapper;
 
 
     @GetMapping(value = ID)
