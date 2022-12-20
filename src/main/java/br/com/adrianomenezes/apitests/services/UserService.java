@@ -19,4 +19,7 @@ public interface UserService {
     void findByEmailCheck(UserDTO dto);
 
     UserDTO update(UserDTO dto);
+
+    void delete(Integer id);
+
 }
