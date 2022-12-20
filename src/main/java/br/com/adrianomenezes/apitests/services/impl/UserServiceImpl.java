@@ -3,6 +3,7 @@ package br.com.adrianomenezes.apitests.services.impl;
 import br.com.adrianomenezes.apitests.domain.User;
 import br.com.adrianomenezes.apitests.repositories.UserRepository;
 import br.com.adrianomenezes.apitests.services.UserService;
+import br.com.adrianomenezes.apitests.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,6 @@ public class UserServiceImpl implements UserService {
     public User findById(Integer id) {
         Optional<User> userReturned = repository.findById(id);
 //        return userReturned.orElse(new User());
-        return userReturned.orElse(null);
+        return userReturned.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado"));
     }
 }

@@ -18,11 +18,13 @@ public class LocalConfig {
 
     @Bean
     public void startDB(){
-        User u1 = new User(null, "Valdir", "valdir@mail.com", "123");
-        User u2 = new User(null, "Luis", "luis@mail.com", "123");
-        User u3 = new User(null, "Paulo", "paulo@mail.com", "123");
-        User u4 = new User(null, "Andre", "andre@mail.com", "123");
+        if (repository.count() <= 0) {
+            User u1 = new User(null, "Valdir", "valdir@mail.com", "123");
+            User u2 = new User(null, "Luis", "luis@mail.com", "123");
+            User u3 = new User(null, "Paulo", "paulo@mail.com", "123");
+            User u4 = new User(null, "Andre", "andre@mail.com", "123");
 
-        repository.saveAll(List.of(u1, u2, u3, u4));
+            repository.saveAll(List.of(u1, u2, u3, u4));
+        }
     }
 }
