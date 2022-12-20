@@ -1,7 +1,9 @@
 package br.com.adrianomenezes.apitests.resources;
 
 import br.com.adrianomenezes.apitests.domain.User;
+import br.com.adrianomenezes.apitests.domain.dto.UserDTO;
 import br.com.adrianomenezes.apitests.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,13 @@ public class UserResource {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private ModelMapper mapper;
+
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Integer id){
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<UserDTO> findById(@PathVariable Integer id){
+        UserDTO userDTOReturned = mapper.map(service.findById(id), UserDTO.class);
+        return ResponseEntity.ok().body(userDTOReturned);
     }
 }
