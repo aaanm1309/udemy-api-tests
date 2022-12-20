@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         if( userReturned == null || userReturned.isEmpty()){
             return null;
         }
-        return userReturned.stream()
+        return (List<UserDTO>) userReturned.stream()
                 .map(x-> mapper.map(x, UserDTO.class))
                 .collect(Collectors.toList());
     }
