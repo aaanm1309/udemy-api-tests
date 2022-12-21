@@ -56,9 +56,7 @@ public class UserServiceImpl implements UserService {
     public void findByEmailCheck(UserDTO dto) {
         Optional<User> user = repository.findByEmail(dto.getEmail());
         if (user.isPresent() && !user.get().getId().equals(dto.getId())){
-            throw new DataIntegrityViolationException(
-                        "Email já cadastrado no sistema. Sistema não aceita email duplicados"
-                    );
+            throw new DataIntegrityViolationException("Email já cadastrado no sistema. Sistema não aceita email duplicados");
         }
     }
 

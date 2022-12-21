@@ -25,8 +25,8 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserResourceTest {
-    private User user;
-    private UserDTO userDTO;
+    private User user = new User();
+    private UserDTO userDTO = new UserDTO();
     private Optional<User> optionalUser;
     private Optional<UserDTO> optionalUserDTO;
     public static final Integer ID = 1;
@@ -109,10 +109,27 @@ class UserResourceTest {
     }
 
     @Test
-    void update() {
+    void whenUpdateThenReturnSuccess() {
+        when(service.update(any())).thenReturn(userDTO);
+        ResponseEntity<UserDTO> response = resource.update(ID,userDTO);
+
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(ID, response.getBody().getId());
+        assertEquals(NOME, response.getBody().getName());
+        assertEquals(EMAIL, response.getBody().getEmail());
+        assertEquals(PASSWORD, response.getBody().getPassword());
     }
 
     @Test
-    void delete() {
+    void whenDeleteThenReturnNoContent() {
+        doNothing().when(service).delete(anyInt());
+
+        ResponseEntity<UserDTO> response = resource.delete(ID);
+
+        assertNotNull(response);
+        assertEquals(ResponseEntity.class, response.getClass());
+        verify(service, times(1)).delete(anyInt());
+        assertEquals(HttpStatus.NO_CONTENT,response.getStatusCode());
+
     }
 }

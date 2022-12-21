@@ -31,6 +31,7 @@ class UserServiceImplTest {
     public static final String PASSWORD = "123XYZ";
     public static final int INDEX = 0;
     public static final String EMAIL_JA_CADASTRADO_NO_SISTEMA = "Email já cadastrado no sistema. Sistema não aceita email duplicados";
+    public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado";
     @InjectMocks
     private UserServiceImpl service;
     @Mock
@@ -82,7 +83,21 @@ class UserServiceImplTest {
     void whenFindByIdThenReturnAnObjectNotFoundException() {
 //        when(mapper.map(any(), any())).thenReturn(userDTO);
         when(repository.findById(anyInt())).thenThrow(
-                new ObjectNotFoundException("Objeto não encontrado"));
+                new ObjectNotFoundException(OBJETO_NAO_ENCONTRADO));
+
+        try{
+            service.findById(ID);
+//            assertEquals("Esperado Erro no Catch","Não Gerou Erro no Catch");
+        } catch (Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("Objeto não encontrado", ex.getMessage());
+        }
+
+    }
+    @Test
+    void whenFindByIdThenReturnAnObjectNotFoundExceptionWithNull() {
+
+        when(repository.findById(anyInt())).thenReturn(null);
 
         try{
             service.findById(ID);
@@ -91,7 +106,6 @@ class UserServiceImplTest {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals("Objeto não encontrado", ex.getMessage());
         }
-
 
     }
     @Test

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Entity( name = "tb_user")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id

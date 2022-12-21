@@ -1,14 +1,11 @@
 package br.com.adrianomenezes.apitests.resources.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class StandardError {
     private LocalDateTime timestamp;
     private Integer status;
