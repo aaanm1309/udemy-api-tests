@@ -1,0 +1,26 @@
+server:
+  port: 8089
+
+spring:
+  jpa:
+    #Postgresql JPA
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    #MySQL JPA
+  #    database-platform: org.hibernate.dialect.MySQL8Dialect
+  #    show-sql: true
+  #    hibernate:
+  #      ddl-auto: update
+  datasource:
+    #PostGreSQL Datasource
+    url: jdbc:postgresql://localhost:5433/apiTests
+    username: postgres
+    password: techbankRootPsw
+    #MySQL Datasource
+#    url: jdbc:mysql://localhost:3306/bankAccount?createDatabaseIfNotExist=true
+#    username: root
+#    password: techbankRootPsw
+
+
